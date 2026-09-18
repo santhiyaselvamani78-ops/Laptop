@@ -1,0 +1,106 @@
+def createaccount():
+    accno=int(input("enter account no:"))
+    name=input("enter name:")
+    username=input("create username:")
+    password=input("create password:")
+    balance=float(input("enter balance:"))
+    location=input("enter location:")
+    branch=input("enter branch:")
+
+    account={
+        "accno":accno,"name":name,"username":username,"password":password,"balance":balance,"location":location,"branch":branch,"transactions":[]
+    }
+
+    print("Account created successfully")
+    return account
+
+def display(account):
+    print("account no:",account["accno"])
+    print("name:",account["name"])
+    print("balance:",account["balance"])
+    print("location:",account["location"])
+    print("branch:",account["branch"])
+
+def login(account):
+    
+    accno=int(input("enter account number:"))
+
+    if accno!=account["accno"]:
+        print("Invalid account number")
+        return False
+
+    username=input("enter username:")
+    password=input("enter password:")
+
+    if username==account["username"] and password==account["password"]:
+        print("Login successful")
+        return True
+    else:
+        print("Invalid username or password")
+        return False
+
+def deposit(account):
+
+    if login(account):
+        amount=float(input("enter deposit amount:"))
+
+        account["balance"]+=amount
+        account["transactions"].append(f"Deposited: {amount}")
+
+        print("Amount deposited successfully")
+        print("Current balance:",account["balance"])
+
+def withdraw(account):
+
+    if login(account):
+
+        amount=float(input("enter withdraw amount:"))
+
+        if amount<=account["balance"]:
+            account["balance"]-=amount
+            account["transactions"].append(f"Withdraw: {amount}")
+            print("Withdraw successful")
+            print("Current balance:",account["balance"])
+        else:
+            print("Insufficient balance")
+
+def bankbalance(account):
+
+    if login(account):
+        print("Current balance:",account["balance"])
+
+def transactions(account):
+
+    if login(account):
+
+        print("Transaction History")
+
+        if len(account["transactions"])==0:
+            print("No transactions")
+        else:
+            for t in account["transactions"]:
+                print(t)
+
+account=createaccount()
+
+while True:
+    print("1.Create Account 2.Display 3.Deposit 4.Withdraw 5.Balance 6.Transactions 7.Exit")
+    choice=int(input("enter choice:"))
+
+    if choice==1:
+        account=createaccount()
+    elif choice==2:
+        display(account)
+    elif choice==3:
+        deposit(account)
+    elif choice==4:
+        withdraw(account)
+    elif choice==5:
+        bankbalance(account)
+    elif choice==6:
+        transactions(account)
+    elif choice==7:
+        print("Thank you")
+        break
+    else:
+        print("Invalid choice")
